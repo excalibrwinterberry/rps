@@ -4,7 +4,13 @@ let computerScore = 0
 const score = document.querySelector("#score")
 score.textContent = `player score: ${playerScore}   computer score: ${computerScore}`
 
-const buttons = [...document.querySelectorAll("button")]
+
+const outcome = document.querySelector("#outcome")
+
+
+const res = document.querySelector("#result")
+
+const buttons = [...document.querySelectorAll(".playerMove")]
 buttons.forEach((btn)=> {
     btn.addEventListener("click", (e)=>{
         const outcome = playRound(e.target.getAttribute("id"), computerPlay())
@@ -22,43 +28,54 @@ buttons.forEach((btn)=> {
     })
 })
 
+document.querySelector("#reset").addEventListener("click", ()=>{
+    playerScore = 0
+    computerScore = 0
+    score.textContent = `player score: ${playerScore}   computer score: ${computerScore}`
+    outcome.textContent = ''
+    res.textContent = ''
+    buttons.forEach((btn) => {
+        btn.disabled = false
+    })
+
+})
+
 //funtion to play a round
 // 0 -> player lost, 1->match tied, 2->player won
 
 function playRound(playerSelection, computerSelection){
     // console.log(`Player chose ${playerSelection} and computer chose ${computerSelection}`)
 
-    const res = document.querySelector("#result")
     const p = document.createElement('p')
-    let status = ''
+    let status = `Player chose ${playerSelection} and computer chose ${computerSelection} ==> `
     let resultGame = 0
     //first checking for a tie, then checking for individial test cases
 
     if(playerSelection === computerSelection){
-        status = `Its a Tie!! You both chose ${playerSelection}`
+        status += `Its a Tie!! You both chose ${playerSelection}`
         resultGame= 1
     }else if(playerSelection === "rock"){
         if(computerSelection === "paper"){
-            status = `You lose!! ${computerSelection} beats ${playerSelection}`
+            status += `You lose!! ${computerSelection} beats ${playerSelection}`
             resultGame= 0
         }else{
-            status = `You win!! ${playerSelection} beats ${computerSelection}`
+            status += `You win!! ${playerSelection} beats ${computerSelection}`
             resultGame= 2
         }
     } else if(playerSelection === "paper"){
         if(computerSelection === "scissor"){
-            status = `You lose!! ${computerSelection} beats ${playerSelection}`
+            status += `You lose!! ${computerSelection} beats ${playerSelection}`
             resultGame= 0
         }else{
-            status = `You win!! ${playerSelection} beats ${computerSelection}`
+            status += `You win!! ${playerSelection} beats ${computerSelection}`
             resultGame= 2
         }
     }else{
         if(computerSelection === "rock"){
-            status = `You lose!! ${computerSelection} beats ${playerSelection}`
+            status += `You lose!! ${computerSelection} beats ${playerSelection}`
             resultGame= 0
         }else{
-           status = `You win!! ${playerSelection} beats ${computerSelection}`
+           status += `You win!! ${playerSelection} beats ${computerSelection}`
            resultGame= 2
         }
 
@@ -80,14 +97,7 @@ function computerPlay(){
 }
 
 function gameOutcome(){
-    const outcome = document.querySelector("#outcome")
-    let result = ''
-
-    if(computerScore > playerScore){
-        result = "Computer won"
-    }else{
-        result = "Player won"
-    }
+    const result = (computerScore > playerScore) ? "Computer won" : "player won"
 
     outcome.textContent = result
 
